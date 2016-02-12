@@ -62,7 +62,7 @@ public class FuelHandler : MonoBehaviour
 		Dictionary<string,object> progressDict = new Dictionary<string, object>();
 		progressDict.Add("bronze", scoreDict);//these keys should match the variable names
 
-		List<object> tags = null;//new List<object>();
+		List<object> tags = new List<object>();
 		tags.Add("BronzeFilter");
 		tags.Add("bronzeSong1");
 
@@ -215,7 +215,74 @@ public class FuelHandler : MonoBehaviour
 
 		Debug.Log ("OnIgniteLeaderBoard - leaderboard: " + leaderBoardString);
 
-		// process the leaderboard information
+
+
+		// START PROCESSING - process the leaderboard information
+		if( leaderBoard.ContainsKey( "id" ) ) 
+		{
+			string Id = Convert.ToString( leaderBoard["id"] );
+		}
+		if( leaderBoard.ContainsKey( "progress" ) ) 
+		{
+			int Progress = Convert.ToInt32( leaderBoard["progress"] );
+		}
+		if( leaderBoard.ContainsKey( "currentUserId" ) ) 
+		{
+			string CurrentUserId = Convert.ToString( leaderBoard["currentUserId"] );
+		}
+
+		if( leaderBoard.ContainsKey( "rule" ) ) 
+		{
+			Dictionary<string,object> leaderBoardRuleDict = leaderBoard["rule"] as Dictionary<string,object>;
+
+			if( leaderBoardRuleDict.ContainsKey("id") )
+			{
+				string Id = Convert.ToString( leaderBoardRuleDict["id"] );
+			}
+			if( leaderBoardRuleDict.ContainsKey("variable") )
+			{
+				string Variable = Convert.ToString( leaderBoardRuleDict["variable"] );
+			}
+			if( leaderBoardRuleDict.ContainsKey("kind") )
+			{
+				int Kind = Convert.ToInt32( leaderBoardRuleDict["kind"] );
+			}
+			if( leaderBoardRuleDict.ContainsKey("score") )
+			{
+				int Score = Convert.ToInt32( leaderBoardRuleDict["score"] );
+			}
+		}
+			
+		if( leaderBoard.ContainsKey( "leaderList" ) ) 
+		{
+			Dictionary<string,object> leaderListDict = leaderBoard["leaderList"] as Dictionary<string,object>;
+			if( leaderListDict.ContainsKey( "leaders" ) ) 
+			{
+				List<object> leaderList = leaderListDict["leaders"] as List<object>;
+
+				foreach( object leaderObject in leaderList ) 
+				{
+					Dictionary<string,object> leaderDict = leaderObject as Dictionary<string,object>;
+
+					if( leaderDict.ContainsKey("id") )
+					{
+						string Id = Convert.ToString( leaderDict["id"] );
+					}
+					if( leaderDict.ContainsKey("name") )
+					{
+						string Name = Convert.ToString( leaderDict["name"] );
+					}
+					if( leaderDict.ContainsKey("score") )
+					{
+						int Score = Convert.ToInt32( leaderDict["score"] );
+					}
+					if( leaderDict.ContainsKey("rank") )
+					{
+						int Rank = Convert.ToInt32( leaderDict["rank"] );
+					}
+				}
+			}
+		}
 	}
 
 	public void OnIgniteMission (Dictionary<string, object> mission)
