@@ -32,4 +32,13 @@ public class FuelListener : FuelSDKListener
 	{
 		m_fuelHandler.OnIgniteJoinEvent (eventID, joinStatus);
 	}
+
+
+
+
+	public override void OnCompeteUICompletedWithMatch (Dictionary<string, object> matchInfo)
+	{
+		m_fuelHandler.OnCompeteUICompletedWithMatch (matchInfo);
+	}
+
 }

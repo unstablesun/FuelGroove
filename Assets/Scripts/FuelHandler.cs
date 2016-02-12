@@ -16,6 +16,7 @@ public class FuelHandler : MonoBehaviour
 
 	private bool m_initialized;
 	private FuelListener m_listener;
+	private int variable_inc = 1;
 
 	private void Awake ()
 	{
@@ -35,7 +36,10 @@ public class FuelHandler : MonoBehaviour
 		}
 	}
 
-
+	public void ChangeUser()
+	{
+		FuelSDK.Launch ();
+	}
 
 	public void GetEvents() 
 	{
@@ -50,10 +54,10 @@ public class FuelHandler : MonoBehaviour
 	}
 
 
-	public void SendProgress (int score,int coins) 
+	public void SendProgress () 
 	{
 		Dictionary<string,int> scoreDict = new Dictionary<string, int>();
-		scoreDict.Add("value",score);
+		scoreDict.Add("value",variable_inc);
 
 		Dictionary<string,object> progressDict = new Dictionary<string, object>();
 		progressDict.Add("bronze", scoreDict);//these keys should match the variable names
@@ -248,5 +252,92 @@ public class FuelHandler : MonoBehaviour
 	{
 		
 	}
+
+
+
+
+
+
+
+
+
+	private string m_tournamentID;
+	private string m_matchID;
+
+	public void OnCompeteUICompletedWithMatch (Dictionary<string, object> matchInfo)
+	{
+		if (matchInfo == null) {
+			Debug.Log ("OnCompeteUICompletedWithMatch - undefined match info");
+			return;
+		}
+
+		if (matchInfo.Count == 0) {
+			Debug.Log ("OnCompeteUICompletedWithMatch - empty match info");
+			return;
+		}
+
+		string matchInfoString = FuelSDKCommon.Serialize (matchInfo);
+
+		if (matchInfoString == null) {
+			Debug.Log ("OnCompeteUICompletedWithMatch - unable to serialize match info");
+			return;
+		}
+
+		Debug.Log ("OnCompeteUICompletedWithMatch - match info: " + matchInfoString);
+
+		object tournamentIDObject = matchInfo["tournamentID"];
+
+		if (tournamentIDObject == null) {
+			Debug.Log ("OnCompeteUICompletedWithMatch - missing expected tournament ID");
+			return;
+		}
+
+		if (!(tournamentIDObject is string)) {
+			Debug.Log ("OnCompeteUICompletedWithMatch - invalid tournament ID data type: " + tournamentIDObject.GetType ().Name);
+			return;
+		}
+
+		string tournamentID = (string)tournamentIDObject;
+
+		object matchIDObject = matchInfo["matchID"];
+
+		if (matchIDObject == null) {
+			Debug.Log ("OnCompeteUICompletedWithMatch - missing expected match ID");
+			return;
+		}
+
+		if (!(matchIDObject is string)) {
+			Debug.Log ("OnCompeteUICompletedWithMatch - invalid match ID data type: " + matchIDObject.GetType ().Name);
+			return;
+		}
+
+		string matchID = (string)matchIDObject;
+
+		// Caching match information for later
+		m_tournamentID = tournamentID;
+		m_matchID = matchID;
+
+		// fake playing a match
+		StartCoroutine (PerformMatch (matchInfo));
+	}
+
+
+	private IEnumerator PerformMatch (Dictionary<string, object> matchInfo)
+	{
+		// fake obtaining match results
+		yield return new WaitForSeconds (2.0f);
+
+		Dictionary<string, object> matchResult = new Dictionary<string, object> ();
+		matchResult.Add ("matchID", m_matchID);
+		matchResult.Add ("tournamentID", m_tournamentID);
+		matchResult.Add ("score", "55");
+
+		FuelSDK.SubmitMatchResult (matchResult);
+
+		// return back to multiplayer
+		FuelSDK.Launch ();
+	}
+
+
 
 }
