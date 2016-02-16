@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if ACTIVE_FILE
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -408,3 +409,4 @@ public class FuelHandler : MonoBehaviour
 
 
 }
+#endif

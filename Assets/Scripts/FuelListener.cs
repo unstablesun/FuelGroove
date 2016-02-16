@@ -1,3 +1,4 @@
+#if ACTIVE_FILE
 using System.Collections.Generic;
 
 public class FuelListener : FuelSDKListener 
@@ -42,3 +43,4 @@ public class FuelListener : FuelSDKListener
 	}
 
 }
+#endif
