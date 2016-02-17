@@ -1,4 +1,5 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public enum IgniteEventType
@@ -62,6 +63,9 @@ public class IgniteEvent{
 	}
 
 	public void Create ( System.Collections.Generic.Dictionary<string,object> eventDict ) {
+
+		Debug.Log( "IgniteEvent:Create");
+
 		if( eventDict.ContainsKey( "id" ) ) {
 			this.Id = Convert.ToString( eventDict["id"] );
 		}
@@ -123,6 +127,7 @@ public class IgniteEvent{
 		}
 	}
 
+	//LoadActivityData gets called from the callback triggered from GetLeaderBoard, GetMission, or GetQuest
 	public void LoadActivityData( System.Collections.Generic.Dictionary<string,object> dataDict ) {
 		if( this.activity != null ) {
 			this.activity.Create( dataDict );

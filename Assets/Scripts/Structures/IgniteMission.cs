@@ -1,4 +1,5 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class IgniteMission : IgniteActivity {
@@ -33,6 +34,9 @@ public class IgniteMission : IgniteActivity {
 	}
 
 	public override void Create( System.Collections.Generic.Dictionary<string,object> dataDict ) {
+
+		Debug.Log( "IgniteMission:Create");
+
 		base.Create( dataDict );
 
 		if( dataDict.ContainsKey( "metadata" ) ) {

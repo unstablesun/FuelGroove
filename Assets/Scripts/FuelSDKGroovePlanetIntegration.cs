@@ -9,6 +9,24 @@ public class FuelSDKGroovePlanetIntegration : MonoBehaviour
 
 	private int variable_inc = 1;
 
+	//debug calls
+	public void FuelGetEvents()
+	{
+		GetEvents ();
+	}
+
+	public void FuelSendProgress()
+	{
+		SendProgress ();
+
+		OutputLog ();//temp
+	}
+
+	public void OutputLog()
+	{
+		FuelDebugLogger.Instance.OutputAll(events);
+	}
+
 
 
 	#region ------------------------------------- Integration Handler Init -------------------------------------
@@ -56,6 +74,8 @@ public class FuelSDKGroovePlanetIntegration : MonoBehaviour
 
 	public void SendProgress () {
 
+		Debug.Log( "FuelSDKGrooveIntegration - SendProgress called." );
+
 		Dictionary<string,int> scoreDict = new Dictionary<string, int>();
 		scoreDict.Add("value", variable_inc);
 
@@ -66,15 +86,15 @@ public class FuelSDKGroovePlanetIntegration : MonoBehaviour
 		tags.Add("BronzeFilter");
 		tags.Add("bronzeSong1");
 
-		//List<object> methodParams = new List<object>();
-		//methodParams.Add( progressDict );
-		//methodParams.Add( tags );
-		//bool success = FuelSDK.ExecMethod("SendProgress", methodParams);
-		//if(success == true) {
+		List<object> methodParams = new List<object>();
+		methodParams.Add( progressDict );
+		methodParams.Add( tags );
+		bool success = FuelSDK.ExecMethod("SendProgress", methodParams);
+		if(success == true) {
 			//Your progress has been successfully updated
-		//}
+		}
 
-		FuelSDK.SendProgress( progressDict , tags );
+		//FuelSDK.SendProgress( progressDict , tags );
 	}
 
 	#endregion
@@ -101,7 +121,7 @@ public class FuelSDKGroovePlanetIntegration : MonoBehaviour
 	}
 
 	public void OnIgniteEvents( List<object> eventsList ) {
-		Debug.Log( "FuelSDKGrooveIntegration - OnIgniteEventsReceive. event count: "+eventsList.Count );
+		Debug.Log( "FuelSDKGrooveIntegration - OnIgniteEventsReceive. event count: " + eventsList.Count );
 		foreach(object eventObject in eventsList ) {
 			Dictionary<string,object> eventDict = eventObject as Dictionary<string,object>;
 			string eventId = Convert.ToString( eventDict["id"] );
@@ -138,6 +158,8 @@ public class FuelSDKGroovePlanetIntegration : MonoBehaviour
 		if( leaderBoardDict.ContainsKey( "id" ) ) {
 			string id = Convert.ToString( leaderBoardDict["id"] );
 			events[id].LoadActivityData( leaderBoardDict );
+
+			Debug.Log ("FuelSDKGrooveIntegration - LD = " + leaderBoardDict.ToString ());
 		}
 	}
 
@@ -191,6 +213,7 @@ public class FuelSDKGroovePlanetIntegration : MonoBehaviour
 
 	/*--------------------------------------------------------------------------------------------*/
 	#region ------------------------------------- NON Ignite Stuff --------------------------------
+	//debug, for changing the user.  Launch compete, change user, exit.
 
 
 	public void ChangeUser()

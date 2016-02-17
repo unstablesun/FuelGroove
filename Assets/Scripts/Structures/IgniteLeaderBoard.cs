@@ -1,4 +1,5 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class IgniteLeaderBoard : IgniteActivity {
@@ -8,6 +9,9 @@ public class IgniteLeaderBoard : IgniteActivity {
 	public LeaderBoardMetadata Metadata { get; set; }
 
 	public override void Create( System.Collections.Generic.Dictionary<string,object> dataDict ) {
+
+		Debug.Log( "IgniteLeaderBoard:Create");
+
 		base.Create( dataDict );
 		if( dataDict.ContainsKey( "currentUserId" ) ) {
 			this.CurrentUserId = Convert.ToString( dataDict["currentUserId"] );
