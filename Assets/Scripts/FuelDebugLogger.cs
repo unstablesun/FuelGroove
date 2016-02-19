@@ -23,7 +23,7 @@ public class FuelDebugLogger : MonoBehaviour {
 	}
 
 
-	public void OutputAll ( Dictionary<string,IgniteEvent> eventDict )
+	public void OutputAll ( Dictionary<string, IgniteEvent> eventDict )
 	{
 
 		foreach(String cKey in eventDict.Keys)
@@ -36,32 +36,28 @@ public class FuelDebugLogger : MonoBehaviour {
 
 			string CurrentUserId = ILB.CurrentUserId;
 
-			Debug.Log 
-			(
-				"Ignite Event" + "\n" + 
-				"cKey = " + cKey + "\n" + 
-				"Id = " + _e.Id + "\n" + 
-				"EventId = " + _e.EventId + "\n" + 
+			string debugLogEntry = 
+				"Ignite Event" + "\n" +
+				"cKey = " + cKey + "\n" +
+				"Id = " + _e.Id + "\n" +
+				"EventId = " + _e.EventId + "\n" +
 				"StartTime = " + _e.StartTime.ToLongDateString () + "\n" +
-				"CurrentUserId = " + CurrentUserId + "\n"
-			);
+				"CurrentUserId = " + CurrentUserId + "\n";
 
+			debugLogEntry += "\tLeader Board Entries" + "\n";
+			debugLogEntry += "\tId" + "              " + "Rank" +  "  " + "Score" + "   " + "Name" + "    " + "User" + "\n";
 
 			List<LeaderData> LeaderList = ILB.Leaders;
 
 			foreach (LeaderData eventObject in LeaderList) 
 			{
-				String cUser = eventObject.IsCurrentUser.ToString ();
-				Debug.Log 
-				(
-					"\tLeaderData Entry" + "\n" + 
-					"\tcurrent user = " + cUser + "\n" + 
-					"\tId = " + eventObject.Id + "\n" + 
-					"\tName = " + eventObject.Name + "\n" + 
-					"\tRank = " + eventObject.Rank + "\n" + 
-					"\tScore = " + eventObject.Score + "\n"
-				);
+				string cUser = eventObject.IsCurrentUser.ToString ();
+
+				debugLogEntry += "\t" + eventObject.Id  + " " + eventObject.Rank + " " + eventObject.Score + " " + eventObject.Name + " " + cUser + "\n";
 			}
+
+			Debug.Log (debugLogEntry);
+
 		}
 	}
 		
